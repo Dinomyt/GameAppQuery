@@ -18,7 +18,7 @@ const GameGrid = () => {
   const [error, setError] = useState('');
 
   const fetchData = () => {
-    apiClient.get('/game')
+    apiClient.get('/games')
     .then(response => setGames(response.data.results))
     .catch(error => {
       setError(error.message);
