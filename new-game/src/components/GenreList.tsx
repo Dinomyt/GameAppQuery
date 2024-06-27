@@ -4,10 +4,11 @@ import { Genre } from "../hooks/useGenres";
 import getCroppedImageUrl from "../Service/getCroppedImageUrl ";
 
 interface Props {
-    onSelectedGenre: (genre:Genre) => void
+    onSelectedGenre: (genre:Genre) => void;
+    selectedGenre: Genre | null;
 }
 
-const GenreList = ({onSelectedGenre}:Props) => {
+const GenreList = ({onSelectedGenre, selectedGenre}:Props) => {
     
     const {data,isLoading} = useData<Genre>("/genres")
   
@@ -15,15 +16,14 @@ const GenreList = ({onSelectedGenre}:Props) => {
     <>
         <List>
             {isLoading && <Spinner/>}
-        {data.map((x) =>
-            <ListItem key= {x.id}>
-            <HStack>
-                <Image boxSize={16} src={getCroppedImageUrl(x.image_background)} borderRadius={4}/>
-                <Button fontSize={'lg'} variant={'link'} onClick={() => onSelectedGenre(x)}>{x.name}</Button>
-            </HStack>
-            </ListItem>
-        )}
-
+            {data.map((x) =>
+                <ListItem key= {x.id}>
+                <HStack>
+                    <Image boxSize={16} src={getCroppedImageUrl(x.image_background)} borderRadius={4}/>
+                    <Button color={x.id === selectedGenre?.id ? 'blue.500' : 'normal'} fontSize={'lg'} variant={'link'} onClick={() => onSelectedGenre(x)}>{x.name}</Button>
+                </HStack>
+                </ListItem>
+            )}
         </List>
 
     </>
