@@ -1,21 +1,20 @@
 import { SimpleGrid, Text } from "@chakra-ui/react";
-import useGames, { Game } from "../hooks/useGames";
+import useGames from "../hooks/useGames";
 import GameCard from "./GameCard";
-import useData from "../hooks/useData";
+
 import GameCardContainer from "./GameCardContainer";
 import GameCardSkeleton from "./GameCardSkeleton";
-import { Genre } from "../hooks/useGenres";
-import { Platform } from "../hooks/usePlatforms";
+
+import { GameQuery } from "../App";
 
 interface Props {
-  selectedGenre: Genre | null
-  selectedPlatform: Platform | null
+  gameQuery: GameQuery
 }
 
 
-const GameGrid = ({selectedGenre, selectedPlatform}: Props) => {
+const GameGrid = ({gameQuery}: Props) => {
   // const { data, error, isLoading } = useData<Game>("games");
-  const { data, error, isLoading } = useGames(selectedGenre, selectedPlatform);
+  const { data, error, isLoading } = useGames(gameQuery);
 
   const skeleton = Array.from({ length: 20 }, (_, index) => index + 1); // Generate an array of numbers 1 to 20
 

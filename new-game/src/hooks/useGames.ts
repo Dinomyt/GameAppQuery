@@ -2,8 +2,8 @@
 // import apiClient from "../Service/apiClient";
 // import { CanceledError } from "axios";
 
+import { GameQuery } from "../App";
 import useData from "./useData"
-import { Genre } from "./useGenres"
 import { Platform } from "./usePlatforms"
 
 export interface Game {
@@ -19,16 +19,14 @@ export interface FetchGameResponse {
     results: Game []
 }
 
-const useGames =    (   selectedGenre: Genre | null, 
-                        selectedPlatform: Platform | null
-                    ) => useData<Game>('/games',    {  params:  {   genres:selectedGenre?.id, 
-                                                                    parent_platforms:selectedPlatform?.id,
-                                                                                                                   
+const useGames =    ( gameQuery:GameQuery
+                    ) => useData<Game>('/games',    {  params:  {   genres:gameQuery.genre?.id, 
+                                                                    parent_platforms:gameQuery.platform?.id,
+                                                                    ordering:gameQuery.sortOrder,
+                                                                    search:gameQuery.searchText,                                                  
                                                                 }
                                                     }, 
-                                                    [   selectedGenre?.id, 
-                                                        selectedPlatform?.id,
-                                                        
+                                                    [   gameQuery      
                                                     ]
                     )
 

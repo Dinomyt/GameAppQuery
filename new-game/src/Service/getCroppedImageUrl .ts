@@ -1,6 +1,10 @@
+import noImage from '../assets/Image Placeholder/no-image-placeholder-6f3882e0.webp'
+
 const getCroppedImageUrl = (url: string) => {
 
-
+    if (!url){
+        return noImage;
+    }
     const target = 'media/'
 
     //SAVING media in target then getting the length indexOf and the length of it
