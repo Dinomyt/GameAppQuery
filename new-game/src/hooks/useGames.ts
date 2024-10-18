@@ -1,33 +1,39 @@
-// import { useState, useEffect } from "react";
-// import apiClient from "../Service/apiClient";
-// import { CanceledError } from "axios";
-
+import { useQuery } from "@tanstack/react-query";
 import { GameQuery } from "../App";
-import useData from "./useData"
-import { Platform } from "./usePlatforms"
+import { CACHE_KEY_GAMES } from "../constants";
+import apiClient from "../Service/apiClient";
 
+export interface Platform {
+  id: number;
+  name: string;
+  slug: string;
+}
+// Help us shaping our data in the form of our interfaces (type) props to pass data from parent components to child
 export interface Game {
-    id: number;
-    name: string;
-    background_image: string;
-    parent_platforms: {platform: Platform}[];
-    metacritic: number;
+  id: number;
+  name: string;
+  background_image: string;
+  parent_platforms: { platform: Platform }[];
+  metacritic: number;
 }
-  
-export interface FetchGameResponse {
-    count: number
-    results: Game []
+export interface FetchGameResponse<T> {
+  count: number;
+  results: T[];
 }
+const useGames = (gameQuery: GameQuery) =>
+  useQuery({
+    queryKey: [CACHE_KEY_GAMES],
+    queryFn: () =>
+      apiClient
+        .get<FetchGameResponse<Game>>("/games", {
+          params: {
+            genres: gameQuery.genre?.id,
+            parent_platforms: gameQuery.platform?.id,
+            ordering: gameQuery.sortOrder,
+            search: gameQuery.searchText,
+          },
+        })
+        .then((res) => res.data),
+  });
 
-const useGames =    ( gameQuery:GameQuery
-                    ) => useData<Game>('/games',    {  params:  {   genres:gameQuery.genre?.id, 
-                                                                    parent_platforms:gameQuery.platform?.id,
-                                                                    ordering:gameQuery.sortOrder,
-                                                                    search:gameQuery.searchText,                                                  
-                                                                }
-                                                    }, 
-                                                    [   gameQuery      
-                                                    ]
-                    )
-
-export default useGames
+export default useGames;

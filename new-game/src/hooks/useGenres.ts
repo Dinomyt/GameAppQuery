@@ -1,20 +1,25 @@
-// import { useState, useEffect } from "react";
-// import apiClient from "../Service/apiClient";
-// import { CanceledError } from "axios";
+import { useQuery } from "@tanstack/react-query"
+import useData from "./useData"
+import {CACHE_KEY_GENRES} from "../constants"
+import apiClient from "../Service/apiClient"
 
-import useData from "./useData";
 
-export interface FetchGenreResponse {
-    count: number
-    results: Genre []
-}
-
+//help us shape our data in the form of our interfaces (type) props to pass data from parent component to child
 export interface Genre {
-    id: number;
-    name: string;
-    image_background: string
+    id: number
+    name: string
+    image_background:string
 }
 
-const useGenres = () => useData<Genre>('/genres')
+interface FetchGameResponse <T>  {
+    count: number
+    results: T[];
+}
 
-export default useGenres
+const useGenres = () => useQuery({
+    queryKey: CACHE_KEY_GENRES,
+    queryFn: () => apiClient.get<FetchGameResponse<Genre>>("/genres").then(res => res.data)
+})
+   
+     
+export default useGenres;
