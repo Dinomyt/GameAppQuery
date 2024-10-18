@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import useData, { FetchResponse } from "./useData"
+import { FetchResponse } from "./useData"
 import {CACHE_KEY_PLATFORM} from "../constants"
 import apiClient from "../Service/apiClient"
 

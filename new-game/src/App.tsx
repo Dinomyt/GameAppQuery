@@ -49,7 +49,7 @@ const App = () => {
             <GameHeading gameQuery={gameQuery}/>
 
           <HStack spacing={5} marginY={5}>
-            <PlatformSelector onSelectedPlatform={(platform) => setGameQuery({...gameQuery, platform})} 
+            <PlatformSelector onSelectPlatform={(platform) => setGameQuery({...gameQuery, platform})} 
                               selectedPlatform={gameQuery.platform} 
             />
             <SortSelector onSelectSortOrder={(sortOrder) => setGameQuery({...gameQuery, sortOrder})}/>
